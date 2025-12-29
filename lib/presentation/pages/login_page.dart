@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/help_bottom_sheet.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -182,7 +183,12 @@ class _LoginPageState extends State<LoginPage> {
                     // Help Text
                     GestureDetector(
                       onTap: () {
-                        // TODO: Implement help action
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent, 
+                          builder: (context) => const HelpBottomSheet(),
+                        );
                       },
                       child: const Text(
                         'Bantuan ?',
