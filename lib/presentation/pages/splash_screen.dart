@@ -1,7 +1,24 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:simat_telkom/presentation/pages/login_page.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Timer(const Duration(seconds: 3), () {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const LoginPage()),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +29,6 @@ class SplashScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Logo
-            // TODO: Replace with actual logo asset 'assets/images/celoe_logo.png'
             Container(
               margin: const EdgeInsets.only(bottom: 10),
               child: Image.asset(
