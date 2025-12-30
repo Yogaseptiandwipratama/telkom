@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../pages/quiz_review_page.dart';
 import '../pages/material_detail_page.dart';
+import '../pages/assignment_detail_page.dart';
 
 class MeetingDetailSheet extends StatefulWidget {
   final String title;
@@ -228,6 +229,12 @@ class _MeetingDetailSheetState extends State<MeetingDetailSheet> {
               '1. Buatlah desain tampilan (antarmuka) pada aplikasi mobile game FPS (First Person Shooter) yang akan menjadi tugas pada mata kuliah Pemrograman Aplikasi Permainan.\n2. Desain yang dibuat harus melingkupi seluruh tampilan pada aplikasi/game, dari pertama kali aplikasi ............',
           icon: Icons.assignment_outlined,
           isCompleted: false, // Grey check
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AssignmentDetailPage()),
+            );
+          },
         ),
       ],
     );
