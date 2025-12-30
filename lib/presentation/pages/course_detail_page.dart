@@ -85,7 +85,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                 'Materi',
                                 style: TextStyle(
                                   fontWeight: _currentTab == 0 ? FontWeight.bold : FontWeight.normal,
-                                  color: Colors.black,
+                                  color: _currentTab == 0 ? Colors.black : Colors.grey,
                                 ),
                               ),
                               if (_currentTab == 0)
@@ -112,8 +112,7 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
                                 'Tugas Dan Kuis',
                                 style: TextStyle(
                                   fontWeight: _currentTab == 1 ? FontWeight.bold : FontWeight.normal,
-                                  color: Colors.grey, // Grey for inactive in Figma usually, or just black normal.
-                                  // Let's assume grey for inactive as is common.
+                                  color: _currentTab == 1 ? Colors.black : Colors.grey,
                                 ),
                               ),
                               if (_currentTab == 1)
@@ -197,8 +196,108 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
   }
 
   Widget _buildTugasList() {
-    return const Center(
-      child: Text("Konten Tugas dan Kuis"),
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(24, 0, 24, 100),
+      children: [
+        _buildTaskItem(
+          type: 'QUIZ',
+          title: 'Quiz Review 01',
+          deadline: '26 Februari 2021 23:59 WIB',
+          isCompleted: true,
+          icon: Icons.quiz_outlined,
+        ),
+        _buildTaskItem(
+          type: 'Tugas',
+          title: 'Tugas 01 - UID Android Mobile Game',
+          deadline: '26 Februari 2021 23:59 WIB',
+          isCompleted: false, // Grey check as per design
+          icon: Icons.assignment_outlined,
+        ),
+        _buildTaskItem(
+          type: 'Pertemuan 3',
+          title: 'Kuis - Assessment 2',
+          deadline: '26 Februari 2021 23:59 WIB',
+          isCompleted: true,
+          icon: Icons.quiz_outlined,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTaskItem({
+    required String type,
+    required String title,
+    required String deadline,
+    required bool isCompleted,
+    required IconData icon,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF5D9CEC), // Light Blue
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  type,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+              Icon(
+                Icons.check_circle,
+                color: isCompleted ? const Color(0xFF2ECC71) : Colors.grey[300],
+                size: 24,
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(icon, size: 40, color: Colors.black),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'Tenggat Waktu : $deadline',
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
