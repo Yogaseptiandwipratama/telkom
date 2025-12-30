@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'profile_page.dart';
+import 'notification_page.dart';
+import 'announcement_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -205,7 +207,12 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                   Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const AnnouncementPage()),
+                  );
+                },
                 child: const Text(
                   'Lihat Semua',
                   style: TextStyle(
@@ -217,22 +224,29 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           const SizedBox(height: 8),
-          // Need an image here, using a placeholder for now as per instructions
-          Container(
-            height: 150,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.blue[50],
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                'assets/images/Pengumuman.png',
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return const Center(child: Text("Image Not Found", style: TextStyle(color: Colors.grey)));
-                },
+          GestureDetector(
+            onTap: () {
+               Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AnnouncementPage()),
+              );
+            },
+            child: Container(
+              height: 150,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.blue[50],
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.asset(
+                  'assets/images/Pengumuman.png',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Center(child: Text("Image Not Found", style: TextStyle(color: Colors.grey)));
+                  },
+                ),
               ),
             ),
           ),
@@ -387,6 +401,17 @@ class _HomePageState extends State<HomePage> {
         setState(() {
           _selectedIndex = index;
         });
+        
+         if (index == 2) { // Notifikasi
+           Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const NotificationPage()),
+          ).then((_) {
+               setState(() {
+                 _selectedIndex = 0; 
+               });
+          });
+        }
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
