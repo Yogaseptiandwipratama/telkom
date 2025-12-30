@@ -10,7 +10,39 @@ class TakeQuizPage extends StatefulWidget {
 class _TakeQuizPageState extends State<TakeQuizPage> {
   int _currentQuestionIndex = 0;
   final int _totalQuestions = 15;
-  String _selectedOption = 'A'; // Default selected for demo
+  
+  // Track selected answers: index -> option label (e.g., 'A')
+  final Map<int, String> _answers = {};
+
+  final List<Map<String, dynamic>> _questions = [
+    {
+      'question': 'Radio button dapat digunakan untuk menentukan ?',
+      'options': [
+        {'label': 'A', 'text': 'Jenis Kelamin'},
+        {'label': 'B', 'text': 'Alamat'},
+        {'label': 'C', 'text': 'Hobby'},
+        {'label': 'D', 'text': 'Riwayat Pendidikan'},
+        {'label': 'E', 'text': 'Umur'},
+      ],
+    },
+    {
+      'question':
+          'Dalam perancangan web yang baik, untuk teks yang menyampaikan isi konten digunakan font yang sama di setiap halaman, ini merupakan salah satu tujuan yaitu ?',
+      'options': [
+        {'label': 'A', 'text': 'Intergrasi'},
+        {'label': 'B', 'text': 'Standarisasi'},
+        {'label': 'C', 'text': 'Konsistensi'},
+        {'label': 'D', 'text': 'Koefensi'},
+        {'label': 'E', 'text': 'Koreksi'},
+      ],
+    },
+    // Add placeholders for other questions if needed or just handle index check
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,25 +105,31 @@ class _TakeQuizPageState extends State<TakeQuizPage> {
   }
 
   Widget _buildQuestionNavigator() {
-    return Center( // Center the numbers slightly? Figma looks kinda centered or full width?
-      // Figma shows them in two rows maybe? 1-10 then 11-15.
+    return Center(
       child: Wrap(
         spacing: 8,
         runSpacing: 8,
         alignment: WrapAlignment.center,
         children: List.generate(_totalQuestions, (index) {
           int questionNumber = index + 1;
-          bool isCurrent = index == 0; // Highlight first one for demo
-           return Container(
+          bool isAnswered = _answers.containsKey(index);
+          
+          Color circleColor;
+           if (index == _currentQuestionIndex) {
+             circleColor = Colors.white; // Current question is always white (active)
+           } else if (isAnswered) {
+             circleColor = const Color(0xFF2ECC71); // Answered & not current
+           } else {
+             circleColor = Colors.white; // Default
+           }
+
+          return Container(
             width: 32,
-            height: 32, // Check circle size
+            height: 32,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(color: Colors.black),
-              color: isCurrent ? Colors.white : Colors.white, // In Figma all seem white with black border, active one maybe same? 
-              // Wait, image shows all regular. Maybe none selected visually active in the navigator, 
-              // or just regular list.
-              // Let's stick to simple black border.
+              color: circleColor,
             ),
             child: Center(
               child: Text(
@@ -110,61 +148,107 @@ class _TakeQuizPageState extends State<TakeQuizPage> {
   }
 
   Widget _buildQuestionContent() {
+    // If index out of bounds of our dummy data, show generic placeholder or repeat last
+    final questionData = _currentQuestionIndex < _questions.length
+        ? _questions[_currentQuestionIndex]
+        : {
+            'question': 'Contoh soal nomor ${_currentQuestionIndex + 1} ...',
+            'options': [
+               {'label': 'A', 'text': 'Pilihan A'},
+               {'label': 'B', 'text': 'Pilihan B'},
+            ]
+          };
+
+    final questionText = questionData['question'] as String;
+    final options = questionData['options'] as List<Map<String, String>>;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Soal Nomor 1 / 15',
-          style: TextStyle(
+        Text(
+          'Soal Nomor ${_currentQuestionIndex + 1} / 15',
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
         ),
         const SizedBox(height: 48),
-        const Text(
-          'Radio button dapat digunakan untuk menentukan ?',
-          style: TextStyle(
+        Text(
+          questionText,
+          style: const TextStyle(
             fontSize: 16,
             color: Colors.black,
+            height: 1.5,
           ),
         ),
         const SizedBox(height: 32),
         
         // Options
-        _buildOption('A.', 'Jenis Kelamin', true),
-        _buildOption('B.', 'Alamat', false),
-        _buildOption('C.', 'Hobby', false),
-        _buildOption('D.', 'Riwayat Pendidikan', false),
-        _buildOption('E.', 'Umur', false),
+        ...options.map((opt) => _buildOption(opt['label']!, opt['text']!)).toList(),
 
         const SizedBox(height: 48),
 
-        Align(
-          alignment: Alignment.centerRight,
-          child: ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFF5F5F5), // Light grey
-              foregroundColor: Colors.black,
-              elevation: 0,
-               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Previous Button
+            if (_currentQuestionIndex > 0)
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    _currentQuestionIndex--;
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFF5F5F5),
+                  foregroundColor: Colors.black,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                ),
+                child: const Text('Soal Sebelumnya'),
+              )
+            else
+              const Spacer(), // Placeholder to keep Next button pushed to right if Prev is hidden
+
+             // Next Button
+             ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  if (_currentQuestionIndex < _totalQuestions - 1) {
+                    _currentQuestionIndex++;
+                    // For demo purposes, auto-select an answer if continuing to new dummy Q?
+                    // Nah, let user select.
+                  }
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFF5F5F5),
+                foregroundColor: Colors.black,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              child: const Text('Soal Selanjutnya'),
             ),
-            child: const Text('Soal Selanjut nya.'),
-          ),
+          ],
         ),
       ],
     );
   }
 
-  Widget _buildOption(String label, String text, bool isSelected) {
+  Widget _buildOption(String label, String text) {
+    bool isSelected = _answers[_currentQuestionIndex] == label;
+
     return GestureDetector(
       onTap: () {
         setState(() {
-          _selectedOption = label.replaceAll('.', '');
+          _answers[_currentQuestionIndex] = label;
         });
       },
       child: Container(
@@ -172,24 +256,25 @@ class _TakeQuizPageState extends State<TakeQuizPage> {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFFEB5757) : const Color(0xFFF5F5F5), // Red option if selected, Grey if not
+          color: isSelected ? const Color(0xFFEB5757) : const Color(0xFFF5F5F5),
           borderRadius: BorderRadius.circular(12),
-          boxShadow: isSelected ? [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            )
-          ] : [],
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  )
+                ]
+              : [],
         ),
         child: Row(
           children: [
             Text(
-              label,
+              '$label.',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: isSelected ? Colors.black : Colors.black, // Figma shows black text on red?
-                // Looking at image: "A. Jenis Kelamin" is on Red background. Text color seems black.
+                 color: Colors.black,
               ),
             ),
             const SizedBox(width: 16),
@@ -197,7 +282,7 @@ class _TakeQuizPageState extends State<TakeQuizPage> {
               child: Text(
                 text,
                 style: TextStyle(
-                  color: isSelected ? Colors.black : Colors.black,
+                  color: Colors.black,
                 ),
               ),
             ),
