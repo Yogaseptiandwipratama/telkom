@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home_page.dart';
 import 'notification_page.dart';
+import 'course_detail_page.dart';
 
 class MyClassesPage extends StatefulWidget {
   const MyClassesPage({super.key});
@@ -75,12 +76,12 @@ class _MyClassesPageState extends State<MyClassesPage> {
                 progress: 90,
               ),
               _buildClassItem(
-                imageAsset: 'assets/images/f.png', // Indigo/Purple accent
+                imageAsset: 'assets/images/f.png',
                 year: '2021/2',
                 title: 'OLAH RAGA\nD3TT-44-02 [EYR]',
                 progress: 90,
               ),
-              const SizedBox(height: 100), // Space for bottom nav
+              const SizedBox(height: 100),
             ],
           ),
           Positioned(
@@ -101,100 +102,95 @@ class _MyClassesPageState extends State<MyClassesPage> {
     required String title,
     required int progress,
   }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 24),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Image/Box
-          Container(
-            width: 80,
-            height: 80,
-            decoration: BoxDecoration(
-              color: color ?? Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              image: imageAsset != null
-                  ? DecorationImage(
-                      image: AssetImage(imageAsset),
-                      fit: BoxFit.cover,
-                      onError: (exception, stackTrace) {
-                        // Handle error silently or show placeholder
-                      })
-                  : null,
-            ),
-             child: imageAsset == null && color != null ? null : (imageAsset == null ? const Icon(Icons.broken_image, color: Colors.grey) : null), // Fallback
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CourseDetailPage(title: title),
           ),
-          const SizedBox(width: 16),
-          // Content
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  year,
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: Colors.grey[600],
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                // Progress Bar
-                Stack(
-                  children: [
-                    Container(
-                      height: 8,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    Container(
-                      height: 8,
-                      width: MediaQuery.of(context).size.width * 0.5 * (progress / 100), // Approximate width based on screen
-                      // A safer way is using LayoutBuilder but for simplicity relying on expanded width constraint. 
-                      // Actually FractionallySizedBox is better inside a container of defined width.
-                      // Let's use LinearProgressIndicator for simplicity and better control.
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFB44F4F),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                  ],
-                ),
-                 // Actual LinearProgressIndicator gives easier control:
-                 /*
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: LinearProgressIndicator(
-                    value: progress / 100.0,
-                    backgroundColor: Colors.grey[300],
-                    valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFB44F4F)),
-                    minHeight: 8,
-                  ),
-                ),
-                */
-                const SizedBox(height: 4),
-                Text(
-                  '$progress% Selesai',
-                  style: const TextStyle(
-                    fontSize: 10,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 24),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image/Box
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                color: color ?? Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                image: imageAsset != null
+                    ? DecorationImage(
+                        image: AssetImage(imageAsset),
+                        fit: BoxFit.cover,
+                        onError: (exception, stackTrace) {
+                           //
+                        })
+                    : null,
+              ),
+               child: imageAsset == null && color != null ? null : (imageAsset == null ? const Icon(Icons.broken_image, color: Colors.grey) : null),
             ),
-          ),
-        ],
+            const SizedBox(width: 16),
+            // Content
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    year,
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  // Progress Bar
+                  Stack(
+                    children: [
+                      Container(
+                        height: 8,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      Container(
+                        height: 8,
+                        width: MediaQuery.of(context).size.width * 0.5 * (progress / 100),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFB44F4F),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '$progress% Selesai',
+                    style: const TextStyle(
+                      fontSize: 10,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -225,7 +221,7 @@ class _MyClassesPageState extends State<MyClassesPage> {
     return GestureDetector(
       onTap: () {
         if (index == 0) {
-           Navigator.of(context).popUntil((route) => route.isFirst); // Home
+           Navigator.of(context).popUntil((route) => route.isFirst);
         } else if (index == 2) {
           Navigator.push(
             context,
