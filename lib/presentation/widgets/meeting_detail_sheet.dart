@@ -197,7 +197,27 @@ class _MeetingDetailSheetState extends State<MeetingDetailSheet> {
   }
 
   Widget _buildTasksList() {
-    return const Center(child: Text("Tugas dan Kuis Content Placeholder"));
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/images/karakter.png',
+            height: 200,
+            fit: BoxFit.contain,
+          ),
+          const SizedBox(height: 24),
+          const Text(
+            'Tidak Ada Tugas Dan Kuis Hari Ini',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.black87,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildItem({
