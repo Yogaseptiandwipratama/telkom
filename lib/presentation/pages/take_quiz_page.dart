@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simat_telkom/presentation/pages/review_jawaban_page.dart';
 
 class TakeQuizPage extends StatefulWidget {
   const TakeQuizPage({super.key});
@@ -14,30 +15,32 @@ class _TakeQuizPageState extends State<TakeQuizPage> {
   // Track selected answers: index -> option label (e.g., 'A')
   final Map<int, String> _answers = {};
 
-  final List<Map<String, dynamic>> _questions = [
-    {
-      'question': 'Radio button dapat digunakan untuk menentukan ?',
-      'options': [
-        {'label': 'A', 'text': 'Jenis Kelamin'},
-        {'label': 'B', 'text': 'Alamat'},
-        {'label': 'C', 'text': 'Hobby'},
-        {'label': 'D', 'text': 'Riwayat Pendidikan'},
-        {'label': 'E', 'text': 'Umur'},
-      ],
-    },
-    {
-      'question':
-          'Dalam perancangan web yang baik, untuk teks yang menyampaikan isi konten digunakan font yang sama di setiap halaman, ini merupakan salah satu tujuan yaitu ?',
-      'options': [
-        {'label': 'A', 'text': 'Intergrasi'},
-        {'label': 'B', 'text': 'Standarisasi'},
-        {'label': 'C', 'text': 'Konsistensi'},
-        {'label': 'D', 'text': 'Koefensi'},
-        {'label': 'E', 'text': 'Koreksi'},
-      ],
-    },
-    // Add placeholders for other questions if needed or just handle index check
-  ];
+  final List<Map<String, dynamic>> _questions = List.generate(15, (index) {
+    if (index % 2 == 0) {
+      return {
+        'question': 'Radio button dapat digunakan untuk menentukan ?',
+        'options': [
+          {'label': 'A', 'text': 'Jenis Kelamin'},
+          {'label': 'B', 'text': 'Alamat'},
+          {'label': 'C', 'text': 'Hobby'},
+          {'label': 'D', 'text': 'Riwayat Pendidikan'},
+          {'label': 'E', 'text': 'Umur'},
+        ],
+      };
+    } else {
+      return {
+        'question':
+            'Dalam perancangan web yang baik, untuk teks yang menyampaikan isi konten digunakan font yang sama di setiap halaman, ini merupakan salah satu tujuan yaitu ?',
+        'options': [
+          {'label': 'A', 'text': 'Intergrasi'},
+          {'label': 'B', 'text': 'Standarisasi'},
+          {'label': 'C', 'text': 'Konsistensi'},
+          {'label': 'D', 'text': 'Koefensi'},
+          {'label': 'E', 'text': 'Koreksi'},
+        ],
+      };
+    }
+  });
 
   @override
   void initState() {
@@ -137,7 +140,7 @@ class _TakeQuizPageState extends State<TakeQuizPage> {
                 style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Colors.black, // Always black text
                 ),
               ),
             ),
@@ -205,36 +208,49 @@ class _TakeQuizPageState extends State<TakeQuizPage> {
                   foregroundColor: Colors.black,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 ),
-                child: const Text('Soal Sebelumnya'),
+                child: const Text(
+                  'Soal Sebelum nya.',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               )
             else
-              const Spacer(), // Placeholder to keep Next button pushed to right if Prev is hidden
+              const Spacer(), 
 
-             // Next Button
+             // Next / Finish Button
              ElevatedButton(
               onPressed: () {
                 setState(() {
                   if (_currentQuestionIndex < _totalQuestions - 1) {
                     _currentQuestionIndex++;
-                    // For demo purposes, auto-select an answer if continuing to new dummy Q?
-                    // Nah, let user select.
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ReviewJawabanPage(),
+                      ),
+                    );
                   }
                 });
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFF5F5F5),
+                backgroundColor: _currentQuestionIndex == _totalQuestions - 1 
+                    ? const Color(0xFF2ECC71) // Green for Selesai
+                    : const Color(0xFFF5F5F5), // Gray for Next
                 foregroundColor: Colors.black,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               ),
-              child: const Text('Soal Selanjutnya'),
+              child: Text(
+                _currentQuestionIndex == _totalQuestions - 1 ? 'Selesai.' : 'Soal Selanjutnya',
+                 style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         ),
