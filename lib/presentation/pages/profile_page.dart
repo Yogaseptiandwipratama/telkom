@@ -9,7 +9,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   // 0: About Me, 1: Kelas, 2: Edit Profile
-  int _currentTab = 1; // Default to 'Kelas' as requested in the prompt "buatkan bagian kelas" implying we should show it or be able to see it. It's safer to default 0 but allow switching. Or maybe set 1 to show the user immediately. I will set 1 to showcase the work immediately.
+  int _currentTab = 2; // Defaulting to 2 to show the 'Edit Profile' tab as requested.
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +149,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Container(
               height: 3,
               width: 40,
-              color: 'Kelas' == title ? Colors.grey : Colors.grey, // Design shows grey underline
+              color: Colors.grey, // Design shows grey underline
             )
           else
             const SizedBox(height: 3),
@@ -165,13 +165,93 @@ class _ProfilePageState extends State<ProfilePage> {
       case 1:
         return _buildKelasContent();
       case 2:
-        return const Center(child: Padding(
-          padding: EdgeInsets.all(20.0),
-          child: Text("Edit Profile Content Coming Soon"),
-        ));
+        return _buildEditProfileContent();
       default:
         return Container();
     }
+  }
+
+  Widget _buildEditProfileContent() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTextFieldWithLabel('Nama Pertama'),
+        const SizedBox(height: 16),
+        _buildTextFieldWithLabel('Nama Terakhir'),
+        const SizedBox(height: 16),
+        _buildTextFieldWithLabel('E-mail Address'),
+        const SizedBox(height: 16),
+        _buildTextFieldWithLabel('Negara'),
+        const SizedBox(height: 16),
+        _buildTextFieldWithLabel('Deskripsi', maxLines: 5),
+        const SizedBox(height: 24),
+        
+        // Simpan Button
+        Align(
+          alignment: Alignment.bottomRight,
+          child: SizedBox(
+            width: 120, // Approximate width
+            child: ElevatedButton(
+              onPressed: () {
+                // Save logic
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFF5F5F5), // Light grey background
+                foregroundColor: Colors.black, // Black text
+                elevation: 0,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                'Simpan',
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 80), // Bottom padding
+      ],
+    );
+  }
+
+  Widget _buildTextFieldWithLabel(String label, {int maxLines = 1}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: Colors.black87,
+          ),
+        ),
+        const SizedBox(height: 8),
+        TextField(
+          maxLines: maxLines,
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Colors.grey),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(color: Colors.grey.shade400),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Colors.black54),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _buildAboutMeContent() {
