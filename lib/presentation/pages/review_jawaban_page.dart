@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simat_telkom/presentation/pages/quiz_detail_page.dart';
+import 'package:simat_telkom/presentation/pages/quiz_review_page.dart';
 
 class ReviewJawabanPage extends StatelessWidget {
   const ReviewJawabanPage({super.key});
@@ -19,7 +20,7 @@ class ReviewJawabanPage extends StatelessWidget {
                  const SizedBox(height: 32),
                  ..._buildQuestionList(context),
                  const SizedBox(height: 32),
-                 _buildBottomButton(),
+                 _buildBottomButton(context),
                  const SizedBox(height: 50),
               ],
             ),
@@ -220,12 +221,17 @@ class ReviewJawabanPage extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomButton() {
+  Widget _buildBottomButton(BuildContext context) {
      return SizedBox(
        width: 200, // Approximate width
        child: ElevatedButton(
         onPressed: () {
-          // TODO: Implement submission logic
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const QuizReviewPage(),
+            ),
+          );
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF2ECC71), // Green

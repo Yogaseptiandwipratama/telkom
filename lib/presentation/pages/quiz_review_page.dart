@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'take_quiz_page.dart';
+import 'course_detail_page.dart';
 
 class QuizReviewPage extends StatelessWidget {
   const QuizReviewPage({super.key});
@@ -221,7 +222,14 @@ class QuizReviewPage extends StatelessWidget {
                    ),
                    const SizedBox(height: 16),
                    ElevatedButton(
-                     onPressed: () => Navigator.pop(context),
+                     onPressed: () {
+                       Navigator.push(
+                         context,
+                         MaterialPageRoute(
+                           builder: (context) => const CourseDetailPage(title: 'Desain User Interface'),
+                         ),
+                       );
+                     },
                      style: ElevatedButton.styleFrom(
                        backgroundColor: const Color(0xFFF5F5F5),
                        foregroundColor: Colors.black,
