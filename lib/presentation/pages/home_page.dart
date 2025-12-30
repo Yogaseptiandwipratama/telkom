@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'profile_page.dart';
 import 'notification_page.dart';
 import 'announcement_page.dart';
+import 'my_classes_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -402,7 +403,16 @@ class _HomePageState extends State<HomePage> {
           _selectedIndex = index;
         });
         
-         if (index == 2) { // Notifikasi
+        if (index == 1) { // Kelas Saya
+           Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const MyClassesPage()),
+          ).then((_) {
+               setState(() {
+                 _selectedIndex = 0; 
+               });
+          });
+        } else if (index == 2) { // Notifikasi
            Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const NotificationPage()),
