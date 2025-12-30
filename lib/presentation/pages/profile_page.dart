@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'home_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -9,18 +8,13 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  int _selectedIndex = 2; // Notifikasi is index 2 in Home, but maybe Profile doesn't need nav bar highlighting? 
-  // Wait, the design shows the same bottom nav. I'll just assume it's just visual for now or I should replicate it.
-  // Actually, usually Profile is a separate page, but sometimes it replaces the body. 
-  // Given the design has a back button, it seems to be pushed on top.
-  // But it ALSO has a bottom nav. This is tricky. 
-  // If it has a back button, it's likely a pushed route.
-  // I will implement it as a Scaffold with the BottomNavBar for visual consistency, but the Back button goes back to Home.
+  // 0: About Me, 1: Kelas, 2: Edit Profile
+  int _currentTab = 1; // Default to 'Kelas' as requested in the prompt "buatkan bagian kelas" implying we should show it or be able to see it. It's safer to default 0 but allow switching. Or maybe set 1 to show the user immediately. I will set 1 to showcase the work immediately.
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Main background
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           // Red Header Background
@@ -55,10 +49,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 100,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.grey, // Placeholder color
+                  color: Colors.grey,
                   image: DecorationImage(
-                      image: AssetImage('assets/images/foto.png'), // Fallback to logo or maybe I should try to find a face asset?
-                      // I'll leave it as logo for now or just a color if it fails.
+                      image: AssetImage('assets/images/foto.png'),
                       fit: BoxFit.cover
                   ),
                 ),
@@ -103,59 +96,17 @@ class _ProfilePageState extends State<ProfilePage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          _buildTabItem('About Me', true),
-                          _buildTabItem('Kelas', false),
-                          _buildTabItem('Edit Profile', false),
+                          _buildTabItem('About Me', 0),
+                          _buildTabItem('Kelas', 1),
+                          _buildTabItem('Edit Profile', 2),
                         ],
                       ),
                       const SizedBox(height: 30),
                       
-                      // Content List
+                      // Content Area
                       Expanded(
                         child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _buildSectionTitle('Informasi User'),
-                              const SizedBox(height: 16),
-                              _buildInfoItem('Email address', 'yogaseptian@365.telkomuniversity.ac.id'),
-                              const SizedBox(height: 16),
-                              _buildInfoItem('Program Studi', 'D4 Teknologi Rekayasa Multimedia'),
-                              const SizedBox(height: 16),
-                              _buildInfoItem('Fakultas', 'FIT'),
-                              
-                              const SizedBox(height: 30),
-                              
-                              _buildSectionTitle('Aktivitas Login'),
-                              const SizedBox(height: 16),
-                              _buildInfoItem('First access to site', 'Monday, 7 September 2020, 9:27 AM  (288 days 12 hours)'),
-                              const SizedBox(height: 16),
-                              _buildInfoItem('Last access to site', 'Tuesday, 22 June 2021, 9:44 PM  (now)'),
-                              
-                              const SizedBox(height: 40),
-                              
-                              // Logout Button
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: ElevatedButton.icon(
-                                  onPressed: () {
-                                    // Navigate back to Login or generic logout
-                                    Navigator.of(context).popUntil((route) => route.isFirst);
-                                  },
-                                  icon: const Icon(Icons.exit_to_app, color: Colors.white),
-                                  label: const Text('Log Out', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFFB91C1C), // Dark red
-                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 30),
-                            ],
-                          ),
+                          child: _buildContent(),
                         ),
                       ),
                     ],
@@ -175,24 +126,176 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildTabItem(String title, bool isActive) {
+  Widget _buildTabItem(String title, int index) {
+    bool isActive = _currentTab == index;
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _currentTab = index;
+        });
+      },
+      child: Column(
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+              fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+          const SizedBox(height: 4),
+          if (isActive)
+            Container(
+              height: 3,
+              width: 40,
+              color: 'Kelas' == title ? Colors.grey : Colors.grey, // Design shows grey underline
+            )
+          else
+            const SizedBox(height: 3),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContent() {
+    switch (_currentTab) {
+      case 0:
+        return _buildAboutMeContent();
+      case 1:
+        return _buildKelasContent();
+      case 2:
+        return const Center(child: Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Text("Edit Profile Content Coming Soon"),
+        ));
+      default:
+        return Container();
+    }
+  }
+
+  Widget _buildAboutMeContent() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: TextStyle(
-            color: isActive ? Colors.black : Colors.black54,
-            fontSize: 14,
-            fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+        _buildSectionTitle('Informasi User'),
+        const SizedBox(height: 16),
+        _buildInfoItem('Email address', 'dandycandra@student.telkomuniversity.ac.id'),
+        const SizedBox(height: 16),
+        _buildInfoItem('Program Studi', 'D4 Teknologi Rekayasa Multimedia'),
+        const SizedBox(height: 16),
+        _buildInfoItem('Fakultas', 'FIT'),
+        
+        const SizedBox(height: 30),
+        
+        _buildSectionTitle('Aktivitas Login'),
+        const SizedBox(height: 16),
+        _buildInfoItem('First access to site', 'Monday, 7 September 2020, 9:27 AM  (288 days 12 hours)'),
+        const SizedBox(height: 16),
+        _buildInfoItem('Last access to site', 'Tuesday, 22 June 2021, 9:44 PM  (now)'),
+        
+        const SizedBox(height: 40),
+        
+        // Logout Button
+        Align(
+          alignment: Alignment.bottomRight,
+          child: ElevatedButton.icon(
+            onPressed: () {
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            },
+            icon: const Icon(Icons.exit_to_app, color: Colors.white),
+            label: const Text('Log Out', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFB91C1C), // Dark red
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
           ),
         ),
-        if (isActive)
-          Container(
-            margin: const EdgeInsets.only(top: 8),
-            height: 3,
-            width: 40,
-            color: Colors.grey,
+        const SizedBox(height: 80),
+      ],
+    );
+  }
+
+  Widget _buildKelasContent() {
+    final classes = [
+      {
+        'title': 'BAHASA INGGRIS: BUSINESS AND SCIENTIFIC\nD4SM-41-GAB1 [ARS]',
+        'date': 'Tanggal Mulai Monday, 8 February 2021'
+      },
+      {
+        'title': 'DESAIN ANTARMUKA & PENGALAMAN PENGGUNA\nD4SM-42-03 [ADY]',
+        'date': 'Tanggal Mulai Monday, 8 February 2021'
+      },
+      {
+        'title': 'KEWARGANEGARAAN\nD4SM-41-GAB1 [BBO]. JUMAT 2',
+        'date': 'Tanggal Mulai Monday, 8 February 2021'
+      },
+      {
+        'title': 'OLAH RAGA D3TT-44-02 [EYR]',
+        'date': 'Tanggal Mulai Monday, 8 February 2021'
+      },
+      {
+        'title': 'PEMROGRAMAN MULTIMEDIA INTERAKTIF\nD4SM-43-04 [TPR]',
+        'date': 'Tanggal Mulai Monday, 8 February 2021'
+      },
+      {
+        'title': 'PEMROGRAMAN PERANGKAT BERGERAK MULTIMEDIA\nD4SM-41-GAB1 [APJ]',
+        'date': 'Tanggal Mulai Monday, 8 February 2021'
+      },
+      {
+        'title': 'SISTEM OPERASI D4SM-44-02 [DDS]',
+        'date': 'Tanggal Mulai Monday, 8 February 2021'
+      },
+    ];
+
+    return Column(
+      children: [
+        ...classes.map((c) => Padding(
+          padding: const EdgeInsets.only(bottom: 20.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Blue Icon Placeholder
+              Container(
+                width: 60,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF82B1D6), 
+                  borderRadius: BorderRadius.circular(15), 
+                ),
+              ),
+              const SizedBox(width: 16),
+              // Text Content
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      c['title']!,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      c['date']!,
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
+        )).toList(),
+        const SizedBox(height: 80), 
       ],
     );
   }
@@ -224,7 +327,7 @@ class _ProfilePageState extends State<ProfilePage> {
           value,
           style: const TextStyle(
             fontSize: 14,
-            fontWeight: FontWeight.w400, // Regular/light as per design
+            fontWeight: FontWeight.w400,
             color: Colors.black,
           ),
         ),
@@ -236,7 +339,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Container(
       height: 80,
       decoration: const BoxDecoration(
-        color: Color(0xFFB44F4F), // Red
+        color: Color(0xFFB44F4F),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30),
           topRight: Radius.circular(30),
@@ -254,11 +357,10 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildNavItem(IconData icon, String label, int index) {
-      // Just visual for now, doesn't actually navigate inside Profile page context
     return GestureDetector(
       onTap: () {
          if (index == 0) {
-             Navigator.pop(context); // Go back to home
+             Navigator.pop(context);
          }
       },
       child: Column(
