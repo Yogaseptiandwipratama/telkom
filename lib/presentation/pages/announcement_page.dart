@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'announcement_detail_page.dart';
 
 class AnnouncementPage extends StatelessWidget {
   const AnnouncementPage({super.key});
@@ -30,16 +31,19 @@ class AnnouncementPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
             children: [
               _buildAnnouncementItem(
+                context,
                 title: 'Maintenance Pra UAS Semester Genap 2020/2021',
                 subtitle: 'By Admin Celoe - Rabu, 2 Juni 2021, 10:45',
               ),
               const SizedBox(height: 24),
               _buildAnnouncementItem(
+                context,
                 title: 'Pengumuman Maintance',
                 subtitle: 'By Admin Celoe - Senin, 11 Januari 2021, 7:52',
               ),
               const SizedBox(height: 24),
               _buildAnnouncementItem(
+                context,
                 title: 'Maintenance Pra UAS Semeter Ganjil 2020/2021',
                 subtitle: 'By Admin Celoe - Minggu, 10 Januari 2021, 9:30',
               ),
@@ -57,49 +61,59 @@ class AnnouncementPage extends StatelessWidget {
     );
   }
 
-  Widget _buildAnnouncementItem({
+  Widget _buildAnnouncementItem(
+    BuildContext context, {
     required String title,
     required String subtitle,
   }) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Icon
-        Padding(
-          padding: const EdgeInsets.only(top: 4.0, right: 16.0),
-          child: const Icon(
-            Icons.campaign, // Megaphone icon
-            size: 32,
-            color: Colors.black,
+    return GestureDetector(
+      onTap: () {
+        // Navigate to detail page
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AnnouncementDetailPage()),
+        );
+      },
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Icon
+          Padding(
+            padding: const EdgeInsets.only(top: 4.0, right: 16.0),
+            child: const Icon(
+              Icons.campaign, // Megaphone icon
+              size: 32,
+              color: Colors.black,
+            ),
           ),
-        ),
-        // Text Content
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  height: 1.3,
+          // Text Content
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600, // Semi-bold
+                    height: 1.3,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                subtitle,
-                style: TextStyle(
-                  color: Colors.grey[600],
-                  fontSize: 11,
-                  fontWeight: FontWeight.normal,
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 11,
+                    fontWeight: FontWeight.normal,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -128,7 +142,7 @@ class AnnouncementPage extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (index == 0) {
-          Navigator.pop(context); // Assuming Home is back in stack or use named route
+          Navigator.of(context).popUntil((route) => route.isFirst); // Back to Home
         }
       },
       child: Column(
