@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../pages/quiz_review_page.dart';
 
 class MeetingDetailSheet extends StatefulWidget {
   final String title;
@@ -160,36 +161,26 @@ class _MeetingDetailSheetState extends State<MeetingDetailSheet> {
         _buildItem(
           icon: Icons.link,
           text: 'Zoom Meeting Syncronous',
-          isCompleted: true, // Green check
+          isCompleted: true,
         ),
         _buildItem(
           icon: Icons.description_outlined,
-          text: 'Pengantar User Interface Design',
-          isCompleted: false, // Grey check
+          text: 'Elemen-elemen Antarmuka Pengguna',
+          isCompleted: true,
         ),
         _buildItem(
           icon: Icons.description_outlined,
-          text: 'Empat Teori Dasar Antarmuka Pengguna',
-          isCompleted: false, // Grey check
+          text: 'UID Guidelines and Principles',
+          isCompleted: true,
         ),
         _buildItem(
           icon: Icons.description_outlined,
-          text: 'Empat Teori Dasar Antarmuka Pengguna',
-          isCompleted: true, // Green check
-        ),
-        _buildItem(
-          icon: Icons.video_collection_outlined, // Video iconish
-          text: 'User Interface Design for Beginner',
+          text: 'User Profile',
           isCompleted: true,
         ),
         _buildItem(
           icon: Icons.link,
-          text: '20 Prinsip Desain',
-          isCompleted: true,
-        ),
-        _buildItem(
-          icon: Icons.link,
-          text: 'Best Practice UI Design',
+          text: 'Principles of User Interface Design',
           isCompleted: true,
         ),
       ],
@@ -197,6 +188,40 @@ class _MeetingDetailSheetState extends State<MeetingDetailSheet> {
   }
 
   Widget _buildTasksList() {
+    // Check if the title is strictly 'Pengantar User Interface Design' or contains it
+    // Using loose matching to be safe, or exact if preferred. The user said "bagian pengantar user interface design"
+    if (widget.title.contains('Pengantar User Interface Design')) {
+      return _buildEmptyTasksList();
+    }
+
+    return ListView(
+      padding: const EdgeInsets.all(24),
+      children: [
+        _buildTaskItem(
+          title: 'Quiz Review 01',
+          description:
+              'Silahkan kerjakan kuis ini dalam waktu 15 menit sebagai nilai pertama komponen kuis. Jangan lupa klik tombol Submit Answer setelah menjawab seluruh pertanyaan.\nKerjakan sebelum hari Jum\'at, 26 Februari 2021 jam 23:59 WIB.',
+          icon: Icons.quiz_outlined,
+          isCompleted: true,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const QuizReviewPage()),
+            );
+          },
+        ),
+        _buildTaskItem(
+          title: 'Tugas 01 - UID Android Mobile Game',
+          description:
+              '1. Buatlah desain tampilan (antarmuka) pada aplikasi mobile game FPS (First Person Shooter) yang akan menjadi tugas pada mata kuliah Pemrograman Aplikasi Permainan.\n2. Desain yang dibuat harus melingkupi seluruh tampilan pada aplikasi/game, dari pertama kali aplikasi ............',
+          icon: Icons.assignment_outlined,
+          isCompleted: false, // Grey check
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEmptyTasksList() {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -227,38 +252,131 @@ class _MeetingDetailSheetState extends State<MeetingDetailSheet> {
   }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(30), // Rounded pill shape
+        borderRadius: BorderRadius.circular(30),
         border: Border.all(color: Colors.grey[200]!),
         boxShadow: [
           BoxShadow(
-             color: Colors.black.withOpacity(0.02),
-             blurRadius: 5,
-             offset: const Offset(0, 2),
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 5,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: Row(
         children: [
-          Icon(icon, color: Colors.black87, size: 20),
-          const SizedBox(width: 12),
+          Icon(icon, color: Colors.black87, size: 24),
+          const SizedBox(width: 16),
           Expanded(
             child: Text(
               text,
               style: const TextStyle(
-                fontSize: 12,
+                fontSize: 14,
                 color: Colors.black87,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),
-          Icon(
-            Icons.check_circle,
-            color: isCompleted ? const Color(0xFF2ECC71) : Colors.grey[400],
-            size: 24,
+          Container(
+            padding: const EdgeInsets.all(4),
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Color(0xFF2ECC71),
+            ),
+            child: const Icon(
+              Icons.check,
+              color: Colors.white,
+              size: 16,
+            ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildTaskItem({
+    required String title,
+    required String description,
+    required IconData icon,
+    required bool isCompleted,
+    VoidCallback? onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: Colors.grey[200]!),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.02),
+              blurRadius: 5,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Icon Box
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Icon(icon, size: 32, color: Colors.black87),
+            ),
+            const SizedBox(width: 16),
+            // Content
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: isCompleted ? const Color(0xFF2ECC71) : Colors.grey[300],
+                        ),
+                        child: const Icon(
+                          Icons.check,
+                          color: Colors.white,
+                          size: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  const Divider(height: 1, color: Colors.grey),
+                  const SizedBox(height: 8),
+                  Text(
+                    description,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.black87,
+                      height: 1.5,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

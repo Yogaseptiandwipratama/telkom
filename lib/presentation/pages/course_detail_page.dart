@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/meeting_detail_sheet.dart'; 
+import 'quiz_review_page.dart'; 
 
 class CourseDetailPage extends StatefulWidget {
   final String title;
@@ -206,6 +207,12 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
           deadline: '26 Februari 2021 23:59 WIB',
           isCompleted: true,
           icon: Icons.quiz_outlined,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const QuizReviewPage()),
+            );
+          },
         ),
         _buildTaskItem(
           type: 'Tugas',
@@ -231,12 +238,10 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
     required String deadline,
     required bool isCompleted,
     required IconData icon,
+    VoidCallback? onTap,
   }) {
     return GestureDetector(
-       onTap: () {
-        // Potentially open detail for Tasks to if design existed. 
-        // For now handled by Meeting Detail mostly for Materi.
-      },
+      onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(16),
