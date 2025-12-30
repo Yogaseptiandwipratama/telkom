@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'take_quiz_page.dart';
 
 class QuizReviewPage extends StatelessWidget {
   const QuizReviewPage({super.key});
@@ -201,7 +202,12 @@ class QuizReviewPage extends StatelessWidget {
 
                    // Buttons
                    ElevatedButton(
-                     onPressed: () {},
+                     onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const TakeQuizPage()),
+                        );
+                     },
                      style: ElevatedButton.styleFrom(
                        backgroundColor: const Color(0xFFF5F5F5),
                        foregroundColor: Colors.black,
