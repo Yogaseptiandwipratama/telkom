@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/meeting_detail_sheet.dart'; 
 
 class CourseDetailPage extends StatefulWidget {
   final String title;
@@ -231,72 +232,78 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
     required bool isCompleted,
     required IconData icon,
   }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF5D9CEC), // Light Blue
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  type,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
+    return GestureDetector(
+       onTap: () {
+        // Potentially open detail for Tasks to if design existed. 
+        // For now handled by Meeting Detail mostly for Materi.
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF5D9CEC), // Light Blue
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    type,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                    ),
                   ),
                 ),
-              ),
-              Icon(
-                Icons.check_circle,
-                color: isCompleted ? const Color(0xFF2ECC71) : Colors.grey[300],
-                size: 24,
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(icon, size: 40, color: Colors.black),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      'Tenggat Waktu : $deadline',
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.grey[400],
-                      ),
-                    ),
-                  ],
+                Icon(
+                  Icons.check_circle,
+                  color: isCompleted ? const Color(0xFF2ECC71) : Colors.grey[300],
+                  size: 24,
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+            const SizedBox(height: 16),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(icon, size: 40, color: Colors.black),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        'Tenggat Waktu : $deadline',
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Colors.grey[400],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -307,60 +314,68 @@ class _CourseDetailPageState extends State<CourseDetailPage> {
     required String desc,
     required bool isCompleted,
   }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        // No shadow visible in design, seamless white cards? Or very subtle.
-        // Assuming white card on light grey bg.
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF5D9CEC), // Light Blue
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  meeting,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
+    return GestureDetector(
+      onTap: () {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true, // Allow full height control
+          backgroundColor: Colors.transparent, // Sheet handles its own styling
+          builder: (context) => MeetingDetailSheet(title: title),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF5D9CEC), // Light Blue
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    meeting,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                    ),
                   ),
                 ),
-              ),
-              Icon(
-                Icons.check_circle,
-                color: isCompleted ? const Color(0xFF2ECC71) : Colors.grey[300], // Green or Grey
-                size: 24,
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
+                Icon(
+                  Icons.check_circle,
+                  color: isCompleted ? const Color(0xFF2ECC71) : Colors.grey[300], // Green or Grey
+                  size: 24,
+                ),
+              ],
             ),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            desc,
-            style: TextStyle(
-              fontSize: 10,
-              color: Colors.grey[400],
+            const SizedBox(height: 12),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 20),
+            Text(
+              desc,
+              style: TextStyle(
+                fontSize: 10,
+                color: Colors.grey[400],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
