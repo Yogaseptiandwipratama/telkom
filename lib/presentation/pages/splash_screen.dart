@@ -32,20 +32,8 @@ class _SplashScreenState extends State<SplashScreen> {
             Container(
               margin: const EdgeInsets.only(bottom: 10),
               child: Image.asset(
-                'assets/images/celoe_logo.png',
-                width: 150, // Approximate width
-                errorBuilder: (context, error, stackTrace) {
-                  // Fallback if image is missing
-                  return const Text(
-                    'CeLOE',
-                    style: TextStyle(
-                      fontSize: 60,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontFamily: 'Cursive', // Just to make it distinct
-                    ),
-                  );
-                },
+                'assets/images/logo2.png',
+                width: 150, 
               ),
             ),
             // Text
@@ -53,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
               'Learning Management System',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 14, // Approximate size
+                fontSize: 14, 
                 fontWeight: FontWeight.w400,
                 letterSpacing: 0.5,
               ),
