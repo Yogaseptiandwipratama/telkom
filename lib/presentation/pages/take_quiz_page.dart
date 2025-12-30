@@ -116,7 +116,7 @@ class _TakeQuizPageState extends State<TakeQuizPage> {
           
           Color circleColor;
            if (index == _currentQuestionIndex) {
-             circleColor = Colors.white; // Current question is always white (active)
+             circleColor = const Color(0xFF2ECC71); // Current question is green
            } else if (isAnswered) {
              circleColor = const Color(0xFF2ECC71); // Answered & not current
            } else {
