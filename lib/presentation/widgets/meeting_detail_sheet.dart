@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../pages/quiz_review_page.dart';
 import '../pages/material_detail_page.dart';
 import '../pages/assignment_detail_page.dart';
+import '../pages/video_detail_page.dart';
 
 class MeetingDetailSheet extends StatefulWidget {
   final String title;
@@ -184,6 +185,12 @@ class _MeetingDetailSheetState extends State<MeetingDetailSheet> {
           icon: Icons.link,
           text: 'Principles of User Interface Design',
           isCompleted: true,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const VideoDetailPage()),
+            );
+          },
         ),
         _buildItem(
           icon: Icons.description_outlined,
