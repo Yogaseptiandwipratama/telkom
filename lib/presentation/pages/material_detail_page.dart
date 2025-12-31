@@ -54,37 +54,33 @@ class MaterialDetailPage extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              Image.asset(
-                'assets/images/ppt1.png',
-                width: double.infinity,
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(height: 20),
-              Image.asset(
-                'assets/images/ppt2.png',
-                width: double.infinity,
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(height: 20),
-              Image.asset(
-                'assets/images/ppt3.png',
-                width: double.infinity,
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(height: 20),
-              Image.asset(
-                'assets/images/ppt4.png',
-                width: double.infinity,
-                fit: BoxFit.contain,
-              ),
-            ],
+      body: ListView(
+        padding: const EdgeInsets.all(20.0),
+        children: [
+          Image.asset(
+            'assets/images/ppt1.png',
+            width: double.infinity,
+            fit: BoxFit.contain,
           ),
-        ),
+          const SizedBox(height: 20),
+          Image.asset(
+            'assets/images/ppt2.png',
+            width: double.infinity,
+            fit: BoxFit.contain,
+          ),
+          const SizedBox(height: 20),
+          Image.asset(
+            'assets/images/ppt3.png',
+            width: double.infinity,
+            fit: BoxFit.contain,
+          ),
+          const SizedBox(height: 20),
+          Image.asset(
+            'assets/images/ppt4.png',
+            width: double.infinity,
+            fit: BoxFit.contain,
+          ),
+        ],
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/upload_bottom_sheet.dart';
 
 class AssignmentDetailPage extends StatelessWidget {
   const AssignmentDetailPage({super.key});
@@ -23,61 +24,87 @@ class AssignmentDetailPage extends StatelessWidget {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              '1. Buatlah desain tampilan (antarmuka) pada aplikasi mobile game FPS (First Person Shooter) yang akan menjadi tugas pada mata kuliah Pemrograman Aplikasi Permainan.\n\n'
-              '2. Desain yang dibuat harus melingkupi seluruh tampilan pada aplikasi/game, dari pertama kali aplikasi dibuka sampai ditutup kembali, serta desain untuk tampilan-tampilan fungsi yang mendukung permainan seperti pop-up, alert, chat, dan lain-lain.\n\n'
-              '3. Desain bisa dibuat menggunakan aplikasi khusus desain atau secara manual dengan tetap menjunjung kerapihan dan kejelasan setiap elemen dalam desain.\n\n'
-              '4. Berikan identitas aplikasi game yang dibuat, seperti Nama Game, Genre, dan Platform. Serta berikan penjelasan pada setiap elemen pada desain, seperti gambar, teks, tombol, icon, dan lain-lain.\n\n'
-              '5. File dikumpulkan dalam format .PDF dengan size maksimal 5MB.\n\n'
-              '6. Tugas dikumpulkan paling lambat hari Jum\'at, 26 Februari 2021 jam 23:59 WIB (akan tertutup otomatis) dan akan dipresentasikan pada pertemuan selanjutnya via Zoom Meeting.',
-              style: TextStyle(
-                fontSize: 13,
-                height: 1.5,
-                color: Colors.black87,
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    '1. Buatlah desain tampilan (antarmuka) pada aplikasi mobile game FPS (First Person Shooter) yang akan menjadi tugas pada mata kuliah Pemrograman Aplikasi Permainan.\n\n'
+                    '2. Desain yang dibuat harus melingkupi seluruh tampilan pada aplikasi/game, dari pertama kali aplikasi dibuka sampai ditutup kembali, serta desain untuk tampilan-tampilan fungsi yang mendukung permainan seperti pop-up, alert, chat, dan lain-lain.\n\n'
+                    '3. Desain bisa dibuat menggunakan aplikasi khusus desain atau secara manual dengan tetap menjunjung kerapihan dan kejelasan setiap elemen dalam desain.\n\n'
+                    '4. Berikan identitas aplikasi game yang dibuat, seperti Nama Game, Genre, dan Platform. Serta berikan penjelasan pada setiap elemen pada desain, seperti gambar, teks, tombol, icon, dan lain-lain.\n\n'
+                    '5. File dikumpulkan dalam format .PDF dengan size maksimal 5MB.\n\n'
+                    '6. Tugas dikumpulkan paling lambat hari Jum\'at, 26 Februari 2021 jam 23:59 WIB (akan tertutup otomatis) dan akan dipresentasikan pada pertemuan selanjutnya via Zoom Meeting.',
+                    style: TextStyle(
+                      fontSize: 13,
+                      height: 1.5,
+                      color: Colors.black87,
+                    ),
+                    textAlign: TextAlign.justify,
+                  ),
+                  const SizedBox(height: 32),
+                  
+                  // Status Section Header
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFE56A6A), // Slightly lighter red for the header
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8),
+                      ),
+                    ),
+                    child: const Text(
+                      'Status Tugas',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                  
+                  // Status Table
+                  _buildStatusRow('Status', 'Sudah Mengirim untuk di nilai', isEven: true),
+                  _buildStatusRow('Status Nilai', 'Belum Di nilai', isEven: false),
+                  _buildStatusRow('Batas tanggal', 'Jumat, 26 Februari 2021, 23:59 WIB', isEven: true),
+                  _buildStatusRow('Sisa Waktu', 'Tugas sudah di kirim 4 Hari 6 Jam Sebelum nya', isEven: false),
+                  _buildFileRow('File Tugas', 'Dandy Candra Pratama_7708170114.pdf', isEven: true),
+                  
+                  const SizedBox(height: 20),
+                ],
               ),
-              textAlign: TextAlign.justify,
             ),
-            const SizedBox(height: 32),
-            
-            // Status Section Header
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-              decoration: const BoxDecoration(
-                color: Color(0xFFE56A6A), // Slightly lighter red for the header
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(8),
-                  topRight: Radius.circular(8),
+          ),
+          
+          // Fixed Bottom Button
+          Container(
+            padding: const EdgeInsets.all(24.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  offset: const Offset(0, -2),
+                  blurRadius: 10,
                 ),
-              ),
-              child: const Text(
-                'Status Tugas',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-              ),
+              ],
             ),
-            
-            // Status Table
-            _buildStatusRow('Status', 'Sudah Mengirim untuk di nilai', isEven: true),
-            _buildStatusRow('Status Nilai', 'Belum Di nilai', isEven: false),
-            _buildStatusRow('Batas tanggal', 'Jumat, 26 Februari 2021, 23:59 WIB', isEven: true),
-            _buildStatusRow('Sisa Waktu', 'Tugas sudah di kirim 4 Hari 6 Jam Sebelum nya', isEven: false),
-            _buildFileRow('File Tugas', 'Dandy Candra Pratama_7708170114.pdf', isEven: true),
-            
-            const SizedBox(height: 40),
-            
-            // Button
-            Center(
+            child: Center(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true, // This allows the sheet to take full height if needed
+                    backgroundColor: Colors.transparent,
+                    builder: (context) => const UploadBottomSheet(),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFF5F5F5),
                   foregroundColor: Colors.black87,
@@ -95,9 +122,8 @@ class AssignmentDetailPage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
